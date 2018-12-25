@@ -22,11 +22,10 @@ I enjoyed the challenge in both the spaces; My guess, the first assignment works
 
 
 Now, about the details in the assignment submission.
-The percption part comprises in breaking up each o these visible snapshot screen in the pixel-areas of obstacle, navigable and collectable rocks.
-For simbo they are all a collection of pixels within certain colour threshhold. The task is made simpler for us because Udacity created the mountains [obstacles] and navigable terrain with distinct colour variation ;  So we capture the picture, perform color analysis and pick up navigable pixel coordinates, using a color threshold to extract navigable regions. `color_threshold` sets pixels a specified RGB thresholds to 1.
+The percption part comprises in breaking up each of these visible snapshot screen in the pixel-areas of obstacle, navigable and collectable rocks.
+For simbo they are all a collection of pixels within certain colour threshhold. The task is made simpler for us because Udacity created the mountains [obstacles] and navigable terrain with distinct colour variation ;  So we capture the picture, perform color analysis and pick up navigable pixel coordinates, using a color threshold to extract navigable regions. colur threshold sets pixels a specified RGB thresholds to 1.
 
- For  identifying yellow rocks we  specify two color thresholds (just above and below ideal yellow) and then identify rocks as those pixels that are only found when passed through one of the thresholds.
-
+ For  identifying yellow rocks we  specify two color thresholds  above and below for yellow and then identify rocks as those pixels that are only found when falls within this threshold.
 
 
  The coodinates from simbos camera coordinates, transformed  through to polar coordinates that are transformed into world coordinates .

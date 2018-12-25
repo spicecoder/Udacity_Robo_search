@@ -10,7 +10,7 @@ Before writing program code that will interact with simbo , we are allowd to ope
 This way  one can really get fond of simbo's semi gracious move to pick the yellow stones and carefully place them at the back of the truck that simbo is riding on. 
 
 
-After playing with simbo for a while, we are ready to start recording the immediate scenes that simbo's alert eyes can capture through an inbuilt 'camera' in the simulator -which simulates the robots camera. The screens are recorded at a rate of 20 per second and the data are captured in a CSV file. In a real robot these scenes are fed constantly to the robots perception mechanism and by recording these data we get enough test data that we can use to build our algorithim  that will guide simbo to move around autonomously , without being driven by our mouse and keyboards.
+After playing with simbo for a while, we are ready to start recording the immediate scenes that simbo's alert eyes can capture through an inbuilt 'camera' in the simulator -which simulates the robots camera. The screens are recorded at a rate ofabout  20 per second and the data are captured in a CSV file. In a real robot these scenes are fed constantly to the robots perception mechanism and by recording these data we get enough test data that we can use to build our algorithim  that will guide simbo to move around autonomously , without being driven by our mouse and keyboards.
 
 
 At this point it is better to clarify , the challenge for me ,the student here,is in two spaces

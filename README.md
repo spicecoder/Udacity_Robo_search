@@ -20,7 +20,7 @@ I enjoyed the challenge in both the spaces; My guess, the first assignment works
 
 
 Now, about the details in the assignment submission.
-The percption part comprises in breaking upeach of  the visible snapshot screen in the pixel-areas of obstacle, navigable and collectable rocks.
+The percption part comprises in breaking up each o these visible snapshot screen in the pixel-areas of obstacle, navigable and collectable rocks.
 For simbo they are all a collection of pixels within certain colour threshhold. The task is made simpler for us because Udacity created the mountains [obstacles] and navigable terrain with distinct colour variation ;  So we capture the picture, perform color analysis and pick up navigable pixel coordinates, first through the simbos camera coordinates, then through polar coordinates that are transformed into world coordinates .
 
 Transforming to world coordinates help us manipulate the robot with respect to obstacles around and keep track of the fidelity of our map against the ground truth.

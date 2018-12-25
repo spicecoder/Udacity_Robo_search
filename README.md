@@ -1,6 +1,6 @@
 # Udacity_Robo_search :
 ## submission note along with rubrics 
-
+(./auto-robot1.png autonomous mode)
 This is my first project  submission in the Udacity Robotics Software Engineer Nanodegree "Program Search and Sample Return "
 
 The projects allows us to build algorithmic skills in the three foundational principles of robotics operation  namely : Perception,Decesion and Action.
@@ -22,11 +22,10 @@ I enjoyed the challenge in both the spaces; My guess, the first assignment works
 
 
 Now, about the details in the assignment submission.
-The percption part comprises in breaking up each o these visible snapshot screen in the pixel-areas of obstacle, navigable and collectable rocks.
-For simbo they are all a collection of pixels within certain colour threshhold. The task is made simpler for us because Udacity created the mountains [obstacles] and navigable terrain with distinct colour variation ;  So we capture the picture, perform color analysis and pick up navigable pixel coordinates, using a color threshold to extract navigable regions. `color_threshold` sets pixels a specified RGB thresholds to 1.
+The percption part comprises in breaking up each of these visible snapshot screen in the pixel-areas of obstacle, navigable and collectable rocks.
+For simbo they are all a collection of pixels within certain colour threshhold. The task is made simpler for us because Udacity created the mountains [obstacles] and navigable terrain with distinct colour variation ;  So we capture the picture, perform color analysis and pick up navigable pixel coordinates, using a color threshold to extract navigable regions. 
 
- For  identifying yellow rocks we  specify two color thresholds (just above and below ideal yellow) and then identify rocks as those pixels that are only found when passed through one of the thresholds.
-
+ For  identifying yellow rocks we  specify two color thresholds  above and below for yellow and then identify rocks as those pixels that are only found when falls within this threshold.
 
 
  The coodinates from simbos camera coordinates, transformed  through to polar coordinates that are transformed into world coordinates .
@@ -38,7 +37,7 @@ One can get creative and make interesting moves here - I was getting problem whe
 
 
 Although I still donot have the complete list of commands offered by the simulation environment that simbo understands the  much quoted list of commands like :steering, throttle, brake, speed, position, pitch, yaw and roll-   seems to have done a good enough job for the assignment -which is to just locate at least one rock and move around autonomously.  
-I would like to go through the commands available for the simulated robot before thinking about the correct solution in the above two cases.
+I would like to go through the commands available for the simulated robot before thinking about the correct solution in the above two cases. Also I feel the protrayed navigable region is too sensitive to the pitch angle and also the distance of the obstacle from the camera is not represented in a favourable way for navigation purpose. Both these factors can be addressed by determining  ground navigation as the resultant effect from two views of camera -one pointing horizontal and another pointing at an angle tothe ground and determine the pixel count from their average. -this will also help in overcoming the effect of ground elevation and roughness.
 
 However I feel , I could be in a better position to even meet the extra challenge attched to this project , namely for simbo to actualy collect rocks and return to its starting point - if only  I could have had a much clearer picture of what I am supposed to address right from start- instaed of throwing myself into idiosynchracies of python notebook,Roversim , and code snippets depenencies- kind of  lost the forest in the trees for simbo. Possibly Roversim can evolve ,for future students, to be an environment for a student to organise the artifacts needed to make simbo to be self sufficient. 
 

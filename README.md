@@ -1,6 +1,6 @@
 # Udacity_Robo_search :
 ## submission note along with rubrics 
-(./auto-robot1.png autonomous mode)
+(https://github.com/spicecoder/Udacity_Robo_search/blob/master/auto-robot1.png autonomous mode)
 This is my first project  submission in the Udacity Robotics Software Engineer Nanodegree "Program Search and Sample Return "
 
 The projects allows us to build algorithmic skills in the three foundational principles of robotics operation  namely : Perception,Decesion and Action.

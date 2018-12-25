@@ -1,4 +1,6 @@
-# Udacity_Robo_search
+# Udacity_Robo_search :
+## submission note along with rubrics 
+
 This is my first project  submission in the Udacity Robotics Software Engineer Nanodegree "Program Search and Sample Return "
 
 The projects allows us to build algorithmic skills in the three foundational principles of robotics operation  namely : Perception,Decesion and Action.
@@ -21,15 +23,27 @@ I enjoyed the challenge in both the spaces; My guess, the first assignment works
 
 Now, about the details in the assignment submission.
 The percption part comprises in breaking up each o these visible snapshot screen in the pixel-areas of obstacle, navigable and collectable rocks.
-For simbo they are all a collection of pixels within certain colour threshhold. The task is made simpler for us because Udacity created the mountains [obstacles] and navigable terrain with distinct colour variation ;  So we capture the picture, perform color analysis and pick up navigable pixel coordinates, first through the simbos camera coordinates, then through polar coordinates that are transformed into world coordinates .
+For simbo they are all a collection of pixels within certain colour threshhold. The task is made simpler for us because Udacity created the mountains [obstacles] and navigable terrain with distinct colour variation ;  So we capture the picture, perform color analysis and pick up navigable pixel coordinates, using a color threshold to extract navigable regions. `color_threshold` sets pixels a specified RGB thresholds to 1.
 
-Transforming to world coordinates help us manipulate the robot with respect to obstacles around and keep track of the fidelity of our map against the ground truth.
+ For  identifying yellow rocks we  specify two color thresholds (just above and below ideal yellow) and then identify rocks as those pixels that are only found when passed through one of the thresholds.
+
+
+
+ The coodinates from simbos camera coordinates, transformed  through to polar coordinates that are transformed into world coordinates .
+
+Transforming to world coordinates help us manipulate the robot with respect to obstacles around and keep track of the fidelity of our map against the ground truth which is derived from a callibration black and white image.
 Once we get the navigable pixels at any pont in time as simbo throttles ahead , we can keep simbo on course by more or less the median angle from the spread of navigable pixels, with some offset to be biased towards the wall and keep steering in the right direction so Simbo does not land aginst obstacle and gets stuck at one point.
 
-One can get creative and make interesting moves here - I was getting problem when simbo was getting stuck against a particular mountain rock that seemed to be hanging above ground and the navigable median is pointing strainght to the rock and even after getting stuck simbos camera was showing clear navigable area ahead. I put some code to straight way reverse steering if the position of robot does not change over subsequent snapshots.
+One can get creative and make interesting moves here - I was getting problem when simbo was getting stuck against a particular mountain rock that seemed to be hanging above ground and the navigable median is pointing strainght to the rock and even after getting stuck simbos camera was showing clear navigable area ahead. I put some code to straight way reverse steering if the position of robot does not change over subsequent snapshots. I have not found a solution when simbos tyre gets caught in the sand and simbo can not free it without manual intervention.
 
 
 Although I still donot have the complete list of commands offered by the simulation environment that simbo understands the  much quoted list of commands like :steering, throttle, brake, speed, position, pitch, yaw and roll-   seems to have done a good enough job for the assignment -which is to just locate at least one rock and move around autonomously.  
+I would like to go through the commands available for the simulated robot before thinking about the correct solution in the above two cases.
 
-However I feel, myself coming with a strong maths and programming background , I could be in a better position to even meet the extra challenge attched to this project , namely for simbo to actualy collect rocks and return to its starting point - if only  I could have had a much clearer picture of what I am supposed to address right from start- instaed of throwing myself into idiosynchracies of python notebook,roversim , and code snippets depenencies- so called lost the forest in the trees for simbo. Possibly Roversim can evolve ,for future students, to be an environment for a student to organise the artifacts needed to make simbo to be self sufficient. 
+However I feel , I could be in a better position to even meet the extra challenge attched to this project , namely for simbo to actualy collect rocks and return to its starting point - if only  I could have had a much clearer picture of what I am supposed to address right from start- instaed of throwing myself into idiosynchracies of python notebook,Roversim , and code snippets depenencies- kind of  lost the forest in the trees for simbo. Possibly Roversim can evolve ,for future students, to be an environment for a student to organise the artifacts needed to make simbo to be self sufficient. 
+
+The fidelity achieved in the autonomous mode is more than 78 % with ground coverage more than 58%. 
+The Roversim was run with screen resolution 1024 x 768 . 
+The data recorded by me in training mode are in the folder recorded_data. The recorded output video is in output/recorded_mapping.mp4.
+
 

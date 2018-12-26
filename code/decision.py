@@ -37,9 +37,10 @@ def move(Rover):
         #print("decesion move 1")
     if  Rover.vel == 0 :
         #Rover.brake = Rover.brake_set
-        Rover.steer = Rover.p_steer  + 60
+        steer_away = np.random.randint(-15, high=15, dtype='int')
+        Rover.steer = Rover.steer + steer_away
         Rover.throttle = Rover.throttle_set
-        print("decesion steer from", Rover.p_steer,":",Rover.steer)
+        print("stuck ! decesion steer from",":",Rover.steer)
           
     
     elif len(Rover.nav_angles) >= Rover.stop_forward:

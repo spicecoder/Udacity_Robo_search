@@ -4,7 +4,7 @@ from enum import Enum
 
 
 # Creating enum for utility
-class Mode(Enum):
+class ThresholdType(Enum):
     GROUND = "ground"
     OBSTACLE = "obstacle"
     SAMPLE = "sample"
@@ -20,15 +20,15 @@ map_scale = 10
 
 
 # returns ground, obstacle or sample depending on mode
-def color_thresh(img, low_thresh=(0, 0, 0), high_thresh=(160, 160, 160), mode=Mode.GROUND):
+def color_thresh(img, low_thresh=(0, 0, 0), high_thresh=(160, 160, 160), mode=ThresholdType.GROUND):
     color_select = np.zeros_like(img[:,:,0])
 
     final_thresh = None
-    if (mode == Mode.OBSTACLE):
+    if (mode ==ThresholdType.OBSTACLE):
         final_thresh = (img[:,:,0] < high_thresh[0]) \
                     & (img[:,:,1] < high_thresh[1]) \
                     & (img[:,:,2] < high_thresh[2])
-    elif (mode == Mode.SAMPLE):        
+    elif (mode ==ThresholdType.SAMPLE):        
         final_thresh = (np.logical_and(img[:,:,0] >= low_thresh[0], img[:,:,0] <= high_thresh[0])) \
                     &  (np.logical_and(img[:,:,1] >= low_thresh[1], img[:,:,1] <= high_thresh[1])) \
                     &  (np.logical_and(img[:,:,2] >= low_thresh[2], img[:,:,2] <= high_thresh[2]))
@@ -124,11 +124,11 @@ def perception_step(Rover):
     warped = perspect_transform(Rover.img, source, destination)
     
     # Thresholds for ground, obstacle and samples
-    ground_thresh = color_thresh(warped, mode=Mode.GROUND)
-    obstacle_thresh = color_thresh(warped, mode=Mode.OBSTACLE)
+    ground_thresh = color_thresh(warped, mode=ThresholdType.GROUND)
+    obstacle_thresh = color_thresh(warped, mode=ThresholdType.OBSTACLE)
     sample_thresh = color_thresh(
         warped, 
-        mode=Mode.SAMPLE, 
+        mode=ThresholdType.SAMPLE, 
         low_thresh=sample_low_thresh, 
         high_thresh=sample_high_thresh
     )

@@ -169,7 +169,8 @@ I put some code to do some randomly generated  steering angles- which works some
 Although I still donot have the complete list of commands offered by the simulation environment that simbo understands the  much quoted list of commands like :steering, throttle, brake, speed, position, pitch, yaw and roll-   seems to have done a good enough job for the assignment -which is to just locate at least one rock and move around autonomously.
 
 The final result where simbo autonomously moves around and the rocks are located in the environment meeting the criteria that it comes within 3 meters from simbo is seen here :
-![](http://www.youtube.com/watch?v=cqsYZGT7eGE "autonomous")
+
+https://www.youtube.com/watch?v=cqsYZGT7eGE
 
 It is also bit late to ask these questions to the mentor who have been quite helpful along the way ,however,
 I would like to go through the commands available for the simulated robot before thinking about the correct solution in the above two cases.

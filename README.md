@@ -32,9 +32,134 @@ For simbo they are all a collection of pixels within certain colour threshhold. 
 
 Transforming to world coordinates help us manipulate the robot with respect to obstacles around and keep track of the fidelity of our map against the ground truth which is derived from a callibration black and white image.
 
-The color_thresh function in perception.py file takes care of filtering the pixels suitable for Obstacles, Samples and the ground. While Udacity provides most of the code snippets I had to complete the perception_step function in Percpetion.py  to bring the functions work in sequence to get the polar coordinates into Rover's attributes to be accessed in the decesion process.
+In the provided python note book ,I could test my functions working on the recorded samples data as shown below.
 
-Once we get the navigable pixels at any pont in time as simbo throttles ahead , we can keep simbo on course by more or less the median angle from the spread of navigable pixels, with some offset to be biased towards the wall and keep steering in the right direction so Simbo does not land aginst obstacle and gets stuck at one point. The decesion.py file has got the decesion logic to make the Rover go forward ,stop , change direction. Again Udacity provides the function codes that can be used in my task to set up the  the decesion step which I make use of change in position ,and the total time and start time of the Rover provided through the supporting_functions.py. 
+def color_thresh_g(img, low_thresh=(0, 0, 0), high_thresh=(160, 160, 160), mode=ThresholdType.GROUND):
+    color_select = np.zeros_like(img[:,:,0])
+
+    final_thresh = None
+    if (mode ==ThresholdType.OBSTACLE):
+        final_thresh = (img[:,:,0] < high_thresh[0]) \
+                    & (img[:,:,1] < high_thresh[1]) \
+                    & (img[:,:,2] < high_thresh[2])
+    elif (mode ==ThresholdType.SAMPLE):        
+        final_thresh = (np.logical_and(img[:,:,0] >= low_thresh[0], img[:,:,0] <= high_thresh[0])) \
+                    &  (np.logical_and(img[:,:,1] >= low_thresh[1], img[:,:,1] <= high_thresh[1])) \
+                    &  (np.logical_and(img[:,:,2] >= low_thresh[2], img[:,:,2] <= high_thresh[2]))
+    else:
+        final_thresh = (img[:,:,0] > high_thresh[0]) \
+                    & (img[:,:,1] > high_thresh[1]) \
+                    & (img[:,:,2] > high_thresh[2])
+    color_select[final_thresh] = 1
+    return color_select
+
+The above produced the filtered image for obstacle (red) and the yellow sample as shown :
+![filtered pixels ](https://github.com/spicecoder/Udacity_Robo_search/blob/master/obstacle_rock.png "filtered pixels")
+
+
+Also in the note book the transform of coordinates was tested through function cells provided  after which the process_image() cell brought together the functions of color threshholding , world cordinate transform and final generation of world coordinate images from the captured data and I produced the following video from transformed images through the moviepy cell 
+
+![moviepy](https://j.gifs.com/oQNOXz.gif "moviepy ")
+
+
+Now to apply all the functions in the right sequence and empower simbo to ride in autonomous or remotely controlled mode, I 
+need to populate perception_step() and decesion_step()  and then the drive_rover.py function will be ready to send commands to simbo.
+
+The perception_step() function in perception.py file takes care of filtering the pixels suitable for Obstacles, Samples and the Ground . 
+While Udacity provides most of the code snippets I had to complete the perception_step function in Percpetion.py  to bring the functions work in sequence to get the polar coordinates into Rover's attributes to be accessed in the decesion process  as perception_step(Rover) takes the Rover, an RoverState object  as the input we set up the Rover attributes in the RoverState class and fill in the functions already developed and tested for the followings
+
+
+        # 1) set up source an maped destination point
+        # 2)  apply perspective transform
+        # 3) Apply color threshold to identify navigable terrain/obstacles/rock samples
+        # 4) Update Rover.vision_image (this will be displayed on left side of screen)
+        # 5) Convert map image pixel values to rover-centric coords
+        # 6) Convert rover-centric pixel values to world coordinates
+        # 7) Update Rover worldmap (to be displayed on right side of screen) 
+        # 8) Convert rover-centric pixel positions to polar coordinates
+        # 9) Update Rover pixel distances and angles
+        
+
+Once we get the navigable pixels at any pont in time as simbo throttles ahead , we can keep simbo on course by more or less the median angle from the spread of navigable pixels, with some offset to be biased towards the wall and keep steering in the right direction so Simbo does not land aginst obstacle and gets stuck at one point. 
+
+The decesion.py file has got the decesion logic to make the Rover go forward ,stop ,change direction. Again Udacity provides the function codes that can be used in my task to set up the  the decesion_step() which I make use of change in position ,and also the total time and start time of the Rover provided through the supporting_functions.py. 
+
+The decesion_step(Rover) sharing the same RobotSate object and I introduced some  extra attributes like p_pos [previous position] and I introduced some explicit functions for the different modes that simbo can be  in : 
+
+
+    def stop(Rover):
+        if Rover.vel > 0.2:
+            Rover.throttle = 0
+            Rover.brake = Rover.brake_set
+            Rover.steer = 0
+        elif Rover.vel < 0.2:
+            Rover.mode = 'stop'
+
+    def find_and_go(Rover):
+        if Rover.near_sample and Rover.vel == 0 and not Rover.picking_up:
+            Rover.send_pickup = True
+        else:
+            if len(Rover.nav_angles) < Rover.go_forward:
+                Rover.throttle = 0
+                Rover.brake = 0
+                Rover.steer = -15
+                #print("decesion find n go1")
+            if len(Rover.nav_angles) >= Rover.go_forward:
+                Rover.throttle = Rover.throttle_set
+                Rover.brake = 0
+                Rover.mode = 'forward'
+                #print("decesion find n go2")
+            if  Rover.vel == 0 :
+                #Rover.steer = Rover.p_steer  - 180
+                Rover.brake = 0
+                Rover.steer = 15
+                Rover.throttle = Rover.throttle_set
+                #print("find steer back ")    
+
+    def move(Rover):
+        Rover.o_pos = Rover.pos
+        if Rover.near_sample:
+            Rover.mode = 'tostop'
+            #print("decesion move 1")
+        if  Rover.vel == 0 :
+            #Rover.brake = Rover.brake_set
+            steer_away = np.random.randint(-15, high=15, dtype='int')
+            Rover.steer = Rover.steer + steer_away
+            Rover.throttle = Rover.throttle_set
+            print("stuck ! decesion steer from",":",Rover.steer)
+
+
+        elif len(Rover.nav_angles) >= Rover.stop_forward:
+            if Rover.vel < Rover.max_vel:
+                Rover.throttle = Rover.throttle_set
+                #print("decesion move 2")
+            else:
+                Rover.throttle = 0
+                #print("decesion move 3")
+            Rover.brake = 0
+            Rover.p_steer = Rover.steer             
+            Rover.steer = np.max((Rover.nav_angles) * 180 / np.pi) - 30 # minus wall offset
+        else:
+            Rover.mode = 'tostop'
+            Rover.steer = -15
+            #print("decesion move 4")
+    def initial_setup(Rover):
+        if 90 < Rover.yaw < 95:
+            Rover.throttle = Rover.throttle_set
+            Rover.brake = 0
+            Rover.steer = 0
+            if len(Rover.nav_angles) < Rover.go_forward:
+                Rover.mode = 'stop'
+               # print("decesion01")
+        else:
+            Rover.brake = 0
+            Rover.throttle = 0
+            if 90 > Rover.yaw or Rover.yaw >= 270:            
+                Rover.steer = 10 
+               # print("decesion02")
+            else:
+                Rover.steer = -10
+
 
 One can get creative and make interesting moves here - I was getting problem when simbo was getting stuck against a particular mountain rock that seemed to be hanging above ground and the navigable median is pointing straight to the rock and even after getting stuck simbos camera was showing clear navigable area ahead. 
 
@@ -42,6 +167,12 @@ I put some code to do some randomly generated  steering angles- which works some
 
 
 Although I still donot have the complete list of commands offered by the simulation environment that simbo understands the  much quoted list of commands like :steering, throttle, brake, speed, position, pitch, yaw and roll-   seems to have done a good enough job for the assignment -which is to just locate at least one rock and move around autonomously.
+
+The final result where simbo autonomously moves around and the rocks are located in the environment meeting the criteria that it comes within 3 meters from simbo is seen here :
+
+
+[!](http://img.youtube.com/vi/cqsYZGT7eGE/0.jpg)](http://www.youtube.com/watch?v=cqsYZGT7eGE "autonomous")
+
 It is also bit late to ask these questions to the mentor who have been quite helpful along the way ,however,
 I would like to go through the commands available for the simulated robot before thinking about the correct solution in the above two cases.
 

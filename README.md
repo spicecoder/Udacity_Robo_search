@@ -170,7 +170,8 @@ Although I still donot have the complete list of commands offered by the simulat
 
 The final result where simbo autonomously moves around and the rocks are located in the environment meeting the criteria that it comes within 3 meters from simbo is seen here :
 
-https://www.youtube.com/watch?v=cqsYZGT7eGE
+
+With fullvideo here:  https://www.youtube.com/watch?v=cqsYZGT7eGE
 
 It is also bit late to ask these questions to the mentor who have been quite helpful along the way ,however,
 I would like to go through the commands available for the simulated robot before thinking about the correct solution in the above two cases.
